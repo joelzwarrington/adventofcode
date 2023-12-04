@@ -21,26 +21,23 @@ module Year2023
     end
 
     def part_2
-      cards_to_process = data.dup
-      total_scratchcards = 0
+      @memo = {}
 
-      while cards_to_process.present?
-        total_scratchcards += 1
+      data.sum do |card|
+        process_card(card)
+      end
+    end
 
-        card = cards_to_process.shift
-        card_number = card.match(/\d+(?=:)/)[0].to_i
+    def process_card(card)
+      card_number = card.match(/\d+(?=:)/)[0].to_i
+      winning_numbers, numbers = card.from(8).split("|").map { |chars| chars.scan(/\d+/) }
+      number_of_matches = (winning_numbers & numbers).size
 
-        winning_numbers, numbers = card.from(8).split("|").map { |chars| chars.scan(/\d+/) }
-        number_of_matches = (winning_numbers & numbers).size
-
-        next if number_of_matches == 0
-
+      @memo[card_number] ||= begin
         cards_to_add = data[card_number...(card_number + number_of_matches)]
 
-        cards_to_process.push(*cards_to_add)
+        @memo[card_number] = 1 + cards_to_add.sum { |card| process_card(card) }
       end
-
-      total_scratchcards
     end
   end
 end
