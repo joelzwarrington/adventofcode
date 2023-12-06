@@ -1,13 +1,14 @@
 # frozen_string_literal: true
-require 'spec_helper'
+
+require "spec_helper"
 
 RSpec.describe Year2023::Day06 do
-  let(:input) {
+  let(:input) do
     <<~EOF
       Time:      7  15   30
       Distance:  9  40  200
     EOF
-  }
+  end
 
   describe "part 1" do
     subject { described_class.part_1(input) }
