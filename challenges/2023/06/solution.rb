@@ -31,18 +31,20 @@ module Year2023
     end
 
     def part_2
-      nil
+      time = data.first.scan(/\d/).join.to_i
+      distance_to_beat = data.second.scan(/\d/).join.to_i
+
+      leftmost = 0.upto(time).find do |seconds_holding_button|
+        distance = seconds_holding_button * (time - seconds_holding_button)
+        distance > distance_to_beat
+      end
+
+      rightmost = time.downto(0).find do |seconds_holding_button|
+        distance = seconds_holding_button * (time - seconds_holding_button)
+        distance > distance_to_beat
+      end
+
+      rightmost - leftmost + 1
     end
-
-    private
-      # Processes each line of the input file and stores the result in the dataset
-      # def process_input(line)
-      #   line.map(&:to_i)
-      # end
-
-      # Processes the dataset as a whole
-      # def process_dataset(set)
-      #   set
-      # end
   end
 end
