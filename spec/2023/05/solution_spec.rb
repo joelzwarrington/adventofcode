@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Year2023::Day05 do
-  let(:input) {
+  let(:input) do
     <<~EOF
       seeds: 79 14 55 13
 
@@ -39,12 +39,6 @@ RSpec.describe Year2023::Day05 do
       60 56 37
       56 93 4
     EOF
-  }
-
-  describe "part 1" do
-    subject { described_class.part_1(input) }
-
-    it.skip { is_expected.to eq(35) }
   end
 
   describe "part 2" do
