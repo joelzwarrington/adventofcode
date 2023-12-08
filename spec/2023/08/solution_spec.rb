@@ -23,9 +23,24 @@ RSpec.describe Year2023::Day08 do
     it { is_expected.to eq(2) }
   end
 
-  # describe "part 2" do
-  #   subject { described_class.part_2(input) }
+  describe "part 2" do
+    subject { described_class.part_2(input) }
 
-  #   it.skip { is_expected.to eq(1) }
-  # end
+    let(:input) do
+      <<~EOF
+        LR
+
+        11A = (11B, XXX)
+        11B = (XXX, 11Z)
+        11Z = (11B, XXX)
+        22A = (22B, XXX)
+        22B = (22C, 22C)
+        22C = (22Z, 22Z)
+        22Z = (22B, 22B)
+        XXX = (XXX, XXX)
+      EOF
+    end
+
+    it { is_expected.to eq(6) }
+  end
 end
