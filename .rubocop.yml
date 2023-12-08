@@ -15,3 +15,6 @@ RSpec/FilePath:
 
 RSpec/SpecFilePathFormat:
   Enabled: false
+
+RSpec/ImplicitSubject:
+  Enabled: false
