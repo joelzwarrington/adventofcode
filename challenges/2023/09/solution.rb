@@ -21,6 +21,14 @@ module Year2023
           0
         end
       end
+
+      def previous_value
+        if @child.present?
+          @numbers.first - @child.previous_value
+        else
+          0
+        end
+      end
     end
 
     def part_1
@@ -29,7 +37,8 @@ module Year2023
     end
 
     def part_2
-      nil
+      sequences = data.map { |line| Sequence.new(line.scan(/-?\d+/).map(&:to_i)) }
+      sequences.sum(&:previous_value)
     end
   end
 end
