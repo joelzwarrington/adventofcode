@@ -15,29 +15,31 @@ module Year2023
       end
 
       def next_value
-        if @child.present?
-          @numbers.last + @child.next_value
+        if child.present?
+          numbers.last + child.next_value
         else
           0
         end
       end
 
       def previous_value
-        if @child.present?
-          @numbers.first - @child.previous_value
+        if child.present?
+          numbers.first - child.previous_value
         else
           0
         end
       end
     end
 
+    def sequences
+      @sequences ||= data.map { |line| Sequence.new(line.scan(/-?\d+/).map(&:to_i)) }
+    end
+
     def part_1
-      sequences = data.map { |line| Sequence.new(line.scan(/-?\d+/).map(&:to_i)) }
       sequences.sum(&:next_value)
     end
 
     def part_2
-      sequences = data.map { |line| Sequence.new(line.scan(/-?\d+/).map(&:to_i)) }
       sequences.sum(&:previous_value)
     end
   end
