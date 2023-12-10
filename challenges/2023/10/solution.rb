@@ -4,6 +4,7 @@ module Year2023
   class Day10 < Solution
     class Tile
       attr_reader :x, :y, :tile
+      attr_accessor :loop
 
       def initialize(x, y, tile)
         @x = x
@@ -12,10 +13,10 @@ module Year2023
       end
 
       CONNECTIONS = {
-        east: ['S', '-', 'L', 'F'],
-        west: ['S', '-', 'J', '7'],
-        north: ['S', '|', 'L', 'J'],
-        south: ['S', '|', '7', 'F'],
+        east: ["S", "-", "L", "F"],
+        west: ["S", "-", "J", "7"],
+        north: ["S", "|", "L", "J"],
+        south: ["S", "|", "7", "F"],
       }
 
       def connected?(adjacent_pipe)
@@ -43,6 +44,24 @@ module Year2023
 
       def starting?
         tile == "S"
+      end
+
+      def loop?
+        loop || false
+      end
+
+      def north_facing?(matrix:)
+        if tile == "S"
+          above = matrix[y - 1, x]
+
+          if above.present?
+            above.loop?
+          else
+            false
+          end
+        else
+          tile.in?(["|", "L", "J"])
+        end
       end
 
       private
@@ -80,43 +99,75 @@ module Year2023
       end
 
       def furthest_tile_from_starting_position
-        @furthest_tile_from_starting_position ||= begin
-          visited = {}
+        visited = {}
 
-          pipes = starting_position.next_pipe_from(matrix: matrix).map { |pipe| [pipe, starting_position] }
+        pipes = starting_position.next_pipe_from(matrix: matrix).map { |pipe| [pipe, starting_position] }
 
-          (1..).find do
-            pipes = pipes.map do |pipe, previous_pipe|
-              visited[[previous_pipe.x, previous_pipe.y]] = true
+        (1..).find do
+          pipes = pipes.map do |pipe, previous_pipe|
+            visited[[previous_pipe.x, previous_pipe.y]] = true
 
-              [pipe.next_pipe_from(previous_pipe, matrix: matrix), pipe]
-            end
-
-            pipes.any? { |pipe, _previous_pipe| visited.key?([pipe.x, pipe.y]) }
+            [pipe.next_pipe_from(previous_pipe, matrix: matrix), pipe]
           end
+
+          pipes.any? { |pipe, _previous_pipe| visited.key?([pipe.x, pipe.y]) }
         end
       end
 
-      # def adjacent_pipes
-      #   start_x, start_y = matrix.index("S")
+      def number_of_enclosed_tiles
+        visited = {}
 
-      #   adjacent_tiles = [
-      #     [start_x - 1, start_y],
-      #     [start_x, start_y - 1],
-      #     [start_x + 1, start_y],
-      #     [start_x, start_y + 1],
-      #   ].filter { |x, y| x.between?(0, matrix.column_size - 1) && y.between?(0, matrix.row_size - 1) }
+        pipes = starting_position.next_pipe_from(matrix: matrix).map { |pipe| [pipe, starting_position] }
 
-      #   adjacent_tiles.filter_map do |x, y|
-      #     Pipe.new(x, y, matrix[x, y])
-      #   end
-      # end
+        (1..).find do
+          pipes = pipes.map do |pipe, previous_pipe|
+            visited[[previous_pipe.x, previous_pipe.y]] = true
+            previous_pipe.loop = true
+            pipe.loop = true
+
+            [pipe.next_pipe_from(previous_pipe, matrix: matrix), pipe]
+          end
+
+          pipes.any? { |pipe, _previous_pipe| visited.key?([pipe.x, pipe.y]) }
+        end
+
+        inside = 0
+
+        t = matrix.collect(&:tile).to_a # .map(&:join).join("\n")
+
+        (0...matrix.row_size).each do |i|
+          north_facing = 0
+          (0...matrix.column_size).each do |j|
+            tile = matrix[i, j]
+
+            if tile.loop?
+              if tile.north_facing?(matrix: matrix)
+                north_facing += 1
+
+                # puts "#{[i, j]} (#{tile.tile}) is north facing"
+              end
+
+              next
+            end
+
+            if north_facing.odd?
+              t[i][j] = "I"
+              inside += 1
+            end
+          end
+        end
+
+        puts t.map(&:join).join("\n")
+
+        inside
+      end
     end
 
     def pipeline
       @pipeline ||= Pipeline.new(
         data.each_with_index.map do |line, y|
           line.split("").each_with_index.map do |tile, x|
+            # puts "Added new tile: #{tile} at #{x}, #{y}"
             Tile.new(x, y, tile)
           end
         end,
@@ -128,7 +179,7 @@ module Year2023
     end
 
     def part_2
-      nil
+      pipeline.number_of_enclosed_tiles
     end
   end
 end
