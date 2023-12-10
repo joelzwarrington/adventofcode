@@ -34,6 +34,7 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     json (2.6.3)
+    matrix (0.4.2)
     method_source (1.0.0)
     mime-types (3.5.1)
       mime-types-data (~> 3.2015)
@@ -109,6 +110,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   aoc_rb
+  matrix
   pry-byebug
   rspec
   rubocop
