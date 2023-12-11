@@ -3,6 +3,7 @@
 require "active_support"
 require "active_support/all"
 require "matrix"
+require "set"
 
 class Solution
   class << self
