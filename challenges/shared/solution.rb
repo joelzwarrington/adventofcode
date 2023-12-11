@@ -7,12 +7,12 @@ require "set"
 
 class Solution
   class << self
-    def part_1(*input)
-      new(*input).part_1
+    def part_1(*input, **kwargs)
+      new(*input).part_1(**kwargs)
     end
 
-    def part_2(*input)
-      new(*input).part_2
+    def part_2(*input, **kwargs)
+      new(*input).part_2(**kwargs)
     end
   end
 

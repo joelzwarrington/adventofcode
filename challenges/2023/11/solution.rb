@@ -6,8 +6,8 @@ module Year2023
       universe.distance_of_pairs
     end
 
-    def part_2
-      nil
+    def part_2(expansion_multiplier: 1000000)
+      universe.distance_of_pairs(expansion_multiplier: expansion_multiplier)
     end
 
     private
@@ -28,24 +28,24 @@ module Year2023
         end
       end
 
-      def distance_of_pairs
+      def distance_of_pairs(expansion_multiplier: 2)
         galaxies.each_with_object({}) do |a, object|
           object[a] = {}
           galaxies.difference([a]).each do |b|
             next if object[b]&.key?(a)
 
-            object[a][b] = distance(a, b)
+            object[a][b] = distance(a, b, expansion_multiplier - 1)
           end
         end.values.map(&:values).flatten.sum
       end
 
       # private
 
-      def distance((a_row, a_column), (b_row, b_column))
+      def distance((a_row, a_column), (b_row, b_column), expansion_multiplier)
         without_expansion = (a_row - b_row).abs + (a_column - b_column).abs
 
-        extra_rows = expanded_rows.count { |row| row.between?(*[a_row, b_row].sort) }
-        extra_columns = expanded_columns.count { |column| column.between?(*[a_column, b_column].sort) }
+        extra_rows = expanded_rows.count { |row| row.between?(*[a_row, b_row].sort) } * expansion_multiplier
+        extra_columns = expanded_columns.count { |column| column.between?(*[a_column, b_column].sort) } * expansion_multiplier
 
         without_expansion + extra_rows + extra_columns
       end
