@@ -39,7 +39,7 @@ module Year2023
         end.values.map(&:values).flatten.sum
       end
 
-      # private
+      private
 
       def distance((a_row, a_column), (b_row, b_column), expansion_multiplier)
         without_expansion = (a_row - b_row).abs + (a_column - b_column).abs
@@ -49,21 +49,6 @@ module Year2023
 
         without_expansion + extra_rows + extra_columns
       end
-
-      # # temp
-      # def coordinates_to_galaxy_number(row, column)
-      #   case [row, column]
-      #   when [0, 3] then 1
-      #   when [1, 7] then 2
-      #   when [2, 0] then 3
-      #   when [4, 6] then 4
-      #   when [5, 1] then 5
-      #   when [6, 9] then 6
-      #   when [8, 7] then 7
-      #   when [9, 0] then 8
-      #   when [9, 4] then 9
-      #   end
-      # end
 
       def galaxies
         @galaxies ||= Set.new
