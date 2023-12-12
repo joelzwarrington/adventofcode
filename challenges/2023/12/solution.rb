@@ -11,12 +11,16 @@ module Year2023
     end
 
     def part_2
-      nil
+      data.sum do |line|
+        sequence = Array.new(5, line.match(/[?|.|#]+/)).join("?")
+        groups = line.scan(/\d+/).map(&:to_i) * 5
+        arrangements(sequence, groups)
+      end
     end
 
     private
 
-    def arrangements(sequence, groups)
+    memoize def arrangements(sequence, groups)
       case sequence.first
       when "."
         arrangements(sequence.gsub(/^\.+|\.+$/, ""), groups)
