@@ -1,11 +1,13 @@
 # frozen_string_literal: true
+
 module Year2023
   class Day12 < Solution
-    # @input is available if you need the raw data input
-    # Call `data` to access either an array of the parsed data, or a single record for a 1-line input file
-
     def part_1
-      nil
+      data.sum do |line|
+        sequence = line.match(/[?|.|#]+/)[0]
+        groups = line.scan(/\d+/).map(&:to_i)
+        arrangements(sequence, groups)
+      end
     end
 
     def part_2
@@ -13,14 +15,32 @@ module Year2023
     end
 
     private
-      # Processes each line of the input file and stores the result in the dataset
-      # def process_input(line)
-      #   line.map(&:to_i)
-      # end
 
-      # Processes the dataset as a whole
-      # def process_dataset(set)
-      #   set
-      # end
+    def arrangements(sequence, groups)
+      case sequence.first
+      when "."
+        arrangements(sequence.gsub(/^\.+|\.+$/, ""), groups)
+      when "?"
+        arrangements(sequence.sub("?", "."), groups) + arrangements(sequence.sub("?", "#"), groups)
+      when "#"
+        return 0 if groups.empty?
+        return 0 if sequence.size < groups.first
+        return 0 if (0...groups.first).any? { |i| sequence[i] == "." }
+
+        if groups.size > 1
+          return 0 if sequence.size < (groups.first + 1) || sequence[groups.first] == "#"
+
+          arrangements(sequence[(groups.first + 1)..], groups.drop(1))
+        else
+          arrangements(sequence[groups.first..], groups.drop(1))
+        end
+      else
+        if groups.empty?
+          1
+        else
+          0
+        end
+      end
+    end
   end
 end
