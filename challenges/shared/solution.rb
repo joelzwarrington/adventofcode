@@ -3,9 +3,12 @@
 require "active_support"
 require "active_support/all"
 require "matrix"
+require "memery"
 require "set"
 
 class Solution
+  include Memery
+
   class << self
     def part_1(*input, **kwargs)
       new(*input).part_1(**kwargs)

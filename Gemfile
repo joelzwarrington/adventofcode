@@ -10,3 +10,4 @@ gem "rubocop-shopify", require: false
 gem "rubocop-rspec", require: false
 gem "rspec"
 gem "matrix"
+gem "memery"
