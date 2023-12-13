@@ -26,7 +26,7 @@ RSpec.describe Year2023::Day13 do
   describe "part 1" do
     subject { described_class.part_1(input) }
 
-    it { is_expected.to eq(nil) }
+    it { is_expected.to eq(405) }
   end
 
   describe "part 2" do
