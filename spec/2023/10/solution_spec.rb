@@ -54,7 +54,7 @@ RSpec.describe Year2023::Day10 do
 
     it { is_expected.to eq(4) }
 
-    context "another test" do
+    context "with another test input" do
       let(:input) do
         <<~EOF
           ..........
@@ -72,7 +72,7 @@ RSpec.describe Year2023::Day10 do
       it { is_expected.to eq(4) }
     end
 
-    context "another input example" do
+    context "with another input example" do
       let(:input) do
         <<~EOF
           FF7FSF7F7F7F7F7F---7

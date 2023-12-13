@@ -45,7 +45,9 @@ module Year2023
         without_expansion = (a_row - b_row).abs + (a_column - b_column).abs
 
         extra_rows = expanded_rows.count { |row| row.between?(*[a_row, b_row].sort) } * expansion_multiplier
-        extra_columns = expanded_columns.count { |column| column.between?(*[a_column, b_column].sort) } * expansion_multiplier
+        extra_columns = expanded_columns.count do |column|
+          column.between?(*[a_column, b_column].sort)
+        end * expansion_multiplier
 
         without_expansion + extra_rows + extra_columns
       end
