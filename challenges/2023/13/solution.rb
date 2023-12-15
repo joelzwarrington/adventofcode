@@ -19,7 +19,13 @@ module Year2023
         first_horizontal_mirror_index = horizontal(pattern, 1, 1)
         first_vertical_mirror_index = vertical(pattern, 1, 1)
 
-        second_horizontal_mirror_index = horizontal(pattern, 1, 1, ignore: first_horizontal_mirror_index, has_smudges: true)
+        second_horizontal_mirror_index = horizontal(
+          pattern,
+          1,
+          1,
+          ignore: first_horizontal_mirror_index,
+          has_smudges: true,
+        )
         second_vertical_mirror_index = vertical(pattern, 1, 1, ignore: first_vertical_mirror_index, has_smudges: true)
 
         next second_horizontal_mirror_index * 100 if second_horizontal_mirror_index
